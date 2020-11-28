@@ -14,8 +14,7 @@ module.exports = JSON.parse("{\"name\":\"@octokit/rest\",\"version\":\"16.43.1\"
 /***/ ((module) => {
 
 const BAD_KEYWORDS = ['fixup!', 'dropme!', 'fixme!', 'moveme!', 'squashme!'];
-const MIN_COMMIT_MESSAGE_LENGTH = 10;
-module.exports = { BAD_KEYWORDS, MIN_COMMIT_MESSAGE_LENGTH };
+module.exports = { BAD_KEYWORDS };
 
 
 /***/ }),
@@ -26,7 +25,7 @@ module.exports = { BAD_KEYWORDS, MIN_COMMIT_MESSAGE_LENGTH };
 const { getInput, setFailed, debug, error } = __webpack_require__(5127);
 const { GitHub, context } = __webpack_require__(3134);
 
-const { BAD_KEYWORDS, MIN_COMMIT_MESSAGE_LENGTH } = __webpack_require__(9456);
+const { BAD_KEYWORDS } = __webpack_require__(9456);
 
 function filterCommit(commit) {
   commit = commit.toLowerCase();
@@ -49,11 +48,6 @@ async function verifyCommits(repoToken) {
   let isCommitBad = false;
   for (const commit of commits) {
     const { message } = commit.commit;
-
-    if (message.length < MIN_COMMIT_MESSAGE_LENGTH) {
-      error(`commit message \"${message}\" has less than ${MIN_COMMIT_MESSAGE_LENGTH} characters`);
-      isCommitBad = true;
-    }
 
     const badKeywords = filterCommit(message);
     if (badKeywords.length) {
