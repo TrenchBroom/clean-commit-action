@@ -1,7 +1,7 @@
 const { getInput, setFailed, debug, error } = require('@actions/core');
 const { GitHub, context } = require('@actions/github');
 
-const { BAD_KEYWORDS, MIN_COMMIT_MESSAGE_LENGTH } = require('./constants');
+const { BAD_KEYWORDS } = require('./constants');
 
 function filterCommit(commit) {
   commit = commit.toLowerCase();
@@ -24,11 +24,6 @@ async function verifyCommits(repoToken) {
   let isCommitBad = false;
   for (const commit of commits) {
     const { message } = commit.commit;
-
-    if (message.length < MIN_COMMIT_MESSAGE_LENGTH) {
-      error(`commit message \"${message}\" has less than ${MIN_COMMIT_MESSAGE_LENGTH} characters`);
-      isCommitBad = true;
-    }
 
     const badKeywords = filterCommit(message);
     if (badKeywords.length) {
